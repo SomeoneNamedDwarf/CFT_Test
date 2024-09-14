@@ -1,3 +1,4 @@
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -26,7 +27,11 @@ public class Options {
                     if ((i + 1 < args.length) && (args[i + 1].charAt(0) != '-')) {
                         switch (args[i]) {
                             case "-o": // output
-                                output = Paths.get(args[i + 1]);
+                                try {
+                                    output = Paths.get(args[i + 1]);
+                                } catch (InvalidPathException e) {
+                                    throw new IllegalArgumentException(String.format("Не удалось преобразовать %s в путь", args[i]));
+                                }
                                 break;
                             case "-p": // prefix
                                 prefix = args[i + 1];
