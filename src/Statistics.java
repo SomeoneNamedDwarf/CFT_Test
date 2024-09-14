@@ -1,10 +1,12 @@
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 // Абстрактный класс
 abstract class Statistics {
     abstract public void addEntry(BigInteger entry);
 
-    abstract public void addEntry(double entry);
+    abstract public void addEntry(BigDecimal entry);
 
     abstract public void addEntry(String entry);
 
@@ -23,7 +25,7 @@ class StatisticsShort extends Statistics {
     }
 
     @Override
-    public void addEntry(double entry) {
+    public void addEntry(BigDecimal entry) {
         counterFloat++;
     }
 
@@ -45,11 +47,11 @@ class StatisticsFull extends StatisticsShort {
     private BigInteger minInt = null;
     private BigInteger maxInt = null;
     private BigInteger sumInt = new BigInteger("0");
-    private double meanInt = 0.;
-    private double minFloat = Double.MAX_VALUE;
-    private double maxFloat = Double.MIN_VALUE;
-    private double sumFloat = 0.;
-    private double meanFloat = 0.;
+    private BigDecimal meanInt = new BigDecimal("0");
+    private BigDecimal minFloat = null;
+    private BigDecimal maxFloat = null;
+    private BigDecimal sumFloat = new BigDecimal("0");
+    private BigDecimal meanFloat = new BigDecimal("0");
     private int maxString = Integer.MIN_VALUE;
     private int minString = Integer.MAX_VALUE;
 
@@ -60,16 +62,16 @@ class StatisticsFull extends StatisticsShort {
         if (minInt == null || minInt.compareTo(entry) > 0) minInt = entry;
         if (maxInt == null || maxInt.compareTo(entry) < 0) maxInt = entry;
         sumInt = sumInt.add(entry);
-        meanInt = sumInt.doubleValue() / (double) counterInt;
+        meanInt = new BigDecimal(sumInt).divide(new BigDecimal(counterInt), RoundingMode.HALF_UP);
     }
 
     @Override
-    public void addEntry(double entry) {
+    public void addEntry(BigDecimal entry) {
         counterFloat++;
-        if (minFloat > entry) minFloat = entry;
-        if (maxFloat < entry) maxFloat = entry;
-        sumFloat += entry;
-        meanFloat = sumFloat / counterFloat;
+        if (minFloat == null || minFloat.compareTo(entry) > 0) minFloat = entry;
+        if (maxFloat == null || maxFloat.compareTo(entry) < 0) maxFloat = entry;
+        sumFloat = sumFloat.add(entry);
+        meanFloat = sumFloat.divide(new BigDecimal(counterFloat), RoundingMode.HALF_UP);
     }
 
     @Override

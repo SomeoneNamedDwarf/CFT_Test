@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,13 +56,13 @@ public class FileParser {
             BigInteger value = new BigInteger(line);
             stats.addEntry(value);
             type = "integer";
-        } // Попытка считать строку как double
+        } // Попытка считать строку как BigDecimal
         catch (NumberFormatException e) {
             try {
-                double value = Double.parseDouble(line);
+                BigDecimal value = new BigDecimal(line);
                 stats.addEntry(value);
                 type = "float";
-            } // Если не int и не double, то строка принимается за тип string
+            } // Если не BigInteger и не BigDecimal, то строка принимается за тип String
             catch (NumberFormatException ex) {
                 stats.addEntry(line);
                 type = "string";
