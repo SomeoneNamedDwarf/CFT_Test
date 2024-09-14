@@ -30,7 +30,7 @@ public class Options {
                                 try {
                                     output = Paths.get(args[i + 1]);
                                 } catch (InvalidPathException e) {
-                                    throw new IllegalArgumentException(String.format("Не удалось преобразовать %s в путь", args[i]));
+                                    throw new IllegalArgumentException(String.format("Не удалось преобразовать %s в путь", args[i+1]));
                                 }
                                 break;
                             case "-p": // prefix
