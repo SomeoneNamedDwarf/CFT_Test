@@ -54,17 +54,17 @@ public class FileParser {
         // Попытка считать строку как BigInteger
         try {
             BigInteger value = new BigInteger(line);
-            stats.addEntry(value);
+            if (stats != null) stats.addEntry(value);
             type = "integer";
         } // Попытка считать строку как BigDecimal
         catch (NumberFormatException e) {
             try {
                 BigDecimal value = new BigDecimal(line);
-                stats.addEntry(value);
+                if (stats != null) stats.addEntry(value);
                 type = "float";
             } // Если не BigInteger и не BigDecimal, то строка принимается за тип String
             catch (NumberFormatException ex) {
-                stats.addEntry(line);
+                if (stats != null) stats.addEntry(line);
                 type = "string";
             }
         }
